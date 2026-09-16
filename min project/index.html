@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Librarian 🏛️ | The Midnight Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Sparkle Cursor */
+    html, body, * {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="%23fbbf24" stroke="white" stroke-width="1"/><path d="M16 4 L18 12 L26 14 L18 16 L16 24 L14 16 L6 14 L14 12 Z" fill="%23fbbf24" opacity="0.7"><animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="3s" repeatCount="indefinite"/></path></svg>') 16 16, auto !important;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: radial-gradient(circle at top center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* Header */
+    .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+    }
+
+    .sub-title {
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 35px;
+    }
+
+    /* Action & Search Bar */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      padding: 18px 24px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 35px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      max-width: 500px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 10px 16px;
+      color: #f8fafc;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #fbbf24;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+    }
+
+    select option { background: #0f172a; color: #f8fafc; }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #020617;
+      font-weight: 700;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 30px;
+      transition: 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+    }
+
+    /* Books Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .book-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.3s ease;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translateY(-8px);
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.06);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+
+    .book-cover {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      background: #0b0f19;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .book-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .book-author { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+    .genre-tag {
+      display: inline-block;
+      border: 1px solid #fbbf24;
+      color: #fbbf24;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .rating-stars { color: #fbbf24; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+    .book-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .btn-edit { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); }
+    .btn-edit:hover { background: #fbbf24; color: #020617; }
+    .btn-del { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .btn-del:hover { background: #ef4444; color: #ffffff; }
+
+    /* Modal Popup */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: #0f172a;
+      border: 1px solid #fbbf24;
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: #fbbf24;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0f172a;
+      border: 1px solid #fbbf24;
+      color: #fbbf24;
+      padding: 14px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      font-size: 14px;
+      font-weight: 600;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: 0.3s ease;
+      z-index: 2000;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="main-title">Your Librarian 🏛️</h1>
+    <p class="sub-title">CRUD Web Application &bull; The Midnight Archive</p>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by title or author..." onkeyup="filterBooks()" />
+        <select id="genreFilter" onchange="filterBooks()" style="max-width: 160px;">
+          <option value="All">All Genres</option>
+        </select>
+      </div>
+      <button class="btn-gold" onclick="openAddModal()">+ Add New Book</button>
+    </div>
+
+    <!-- Books Cards Grid -->
+    <div class="books-grid" id="booksContainer"></div>
+  </div>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal" id="bookModal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="modalHeading">Add New Book</h2>
+      <form id="bookForm" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" id="bookId" />
+        
+        <div class="form-group">
+          <label>Book Title *</label>
+          <input type="text" id="bookTitle" required placeholder="e.g. The Hobbit" />
+        </div>
+        
+        <div class="form-group">
+          <label>Author Name *</label>
+          <input type="text" id="bookAuthor" required placeholder="e.g. J.R.R. Tolkien" />
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <div class="form-group" style="flex: 1;">
+            <label>Genre *</label>
+            <input type="text" id="bookGenre" required placeholder="e.g. Fantasy" />
+          </div>
+          <div class="form-group" style="width: 120px;">
+            <label>Rating (1-5)</label>
+            <input type="number" id="bookRating" step="0.1" min="1" max="5" value="4.5" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="bookDesc" rows="3" placeholder="Brief synopsis..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-gold" style="flex: 1; justify-content: center;" id="saveBtn">Save Volume</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast">Operation Successful</div>
+
+  <script>
+    const API_URL = 'http://127.0.0.1:8000/api/books/';
+    let allBooks = [];
+
+    // Toast Alert
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // 1. READ: Fetch all books from Backend API
+    async function loadBooks() {
+      try {
+        const response = await fetch(API_URL);
+        allBooks = await response.json();
+        populateGenres(allBooks);
+        renderBooks(allBooks);
+      } catch (err) {
+        showToast("Error connecting to backend API!");
+      }
+    }
+
+    // Populate Genre Dropdown
+    function populateGenres(books) {
+      const genres = ['All', ...new Set(books.map(b => b.genre).filter(Boolean))];
+      const select = document.getElementById('genreFilter');
+      const currentVal = select.value;
+      select.innerHTML = genres.map(g => `<option value="${g}">${g}</option>`).join('');
+      if (genres.includes(currentVal)) select.value = currentVal;
+    }
+
+    // Render Cards
+    function renderBooks(books) {
+      const container = document.getElementById('booksContainer');
+      if (books.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #94a3b8; font-size: 16px; padding: 40px;">No books found in the archive.</p>`;
+        return;
+      }
+
+      container.innerHTML = books.map(book => {
+        const encTitle = encodeURIComponent(book.title);
+        const coverUrl = `https://covers.openlibrary.org/b/title/${encTitle}-M.jpg?default=false`;
+        const fallbackUrl = 'https://images.unsplash.com/photo-1543005127-86b208447ba3?q=80&w=300&auto=format&fit=crop';
+        const stars = '⭐'.repeat(Math.round(book.rating || 4));
+
+        return `
+          <div class="book-card">
+            <div>
+              <img src="${coverUrl}" onerror="this.src='${fallbackUrl}'" class="book-cover" alt="Cover" />
+              <div class="genre-tag">${book.genre || 'General'}</div>
+              <h3 class="book-title">${book.title}</h3>
+              <p class="book-author">by ${book.author}</p>
+              <div class="rating-stars">${stars} ${book.rating || 4.0}</div>
+              <p class="book-desc">${book.description || 'No description provided.'}</p>
+            </div>
+            <div class="card-actions">
+              <button class="btn-action btn-edit" onclick="openEditModal(${book.id})">Edit</button>
+              <button class="btn-action btn-del" onclick="deleteBook(${book.id})">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Search & Filter
+    function filterBooks() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const genre = document.getElementById('genreFilter').value;
+
+      const filtered = allBooks.filter(book => {
+        const matchesQuery = book.title.toLowerCase().includes(q) || book.author.toLowerCase().includes(q);
+        const matchesGenre = (genre === 'All') || (book.genre === genre);
+        return matchesQuery && matchesGenre;
+      });
+      renderBooks(filtered);
+    }
+
+    // 2. CREATE & 3. UPDATE: Form Submission
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('bookId').value;
+      const data = {
+        title: document.getElementById('bookTitle').value.trim(),
+        author: document.getElementById('bookAuthor').value.trim(),
+        genre: document.getElementById('bookGenre').value.trim(),
+        rating: parseFloat(document.getElementById('bookRating').value),
+        description: document.getElementById('bookDesc').value.trim()
+      };
+
+      try {
+        if (id) {
+          // UPDATE (PUT)
+          await fetch(`${API_URL}${id}/`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          showToast("Volume Updated Successfully!");
+        } else {
+          // CREATE (POST)
+          await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          showToast("New Volume Added to Archive!");
+        }
+        closeModal();
+        loadBooks();
+      } catch (err) {
+        showToast("Operation failed. Try again!");
+      }
+    }
+
+    // 4. DELETE: Remove Book
+    async function deleteBook(id) {
+      if (confirm("Are you sure you want to delete this volume from the archive?")) {
+        try {
+          await fetch(`${API_URL}${id}/`, { method: 'DELETE' });
+          showToast("Volume Removed from Archive!");
+          loadBooks();
+        } catch (err) {
+          showToast("Delete failed!");
+        }
+      }
+    }
+
+    // Modal Control
+    function openAddModal() {
+      document.getElementById('bookId').value = '';
+      document.getElementById('modalHeading').innerText = 'Add New Book';
+      document.getElementById('saveBtn').innerText = 'Add Volume';
+      document.getElementById('bookForm').reset();
+      document.getElementById('bookModal').style.display = 'flex';
+    }
+
+    function openEditModal(id) {
+      const b = allBooks.find(item => item.id === id);
+      if (!b) return;
+      document.getElementById('bookId').value = b.id;
+      document.getElementById('modalHeading').innerText = 'Edit Book Details';
+      document.getElementById('saveBtn').innerText = 'Update Volume';
+      document.getElementById('bookTitle').value = b.title;
+      document.getElementById('bookAuthor').value = b.author;
+      document.getElementById('bookGenre').value = b.genre;
+      document.getElementById('bookRating').value = b.rating;
+      document.getElementById('bookDesc').value = b.description || '';
+      document.getElementById('bookModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('bookModal').style.display = 'none';
+    }
+
+    // Close modal on click outside
+    window.onclick = function(e) {
+      if (e.target === document.getElementById('bookModal')) closeModal();
+    }
+
+    // Initial Fetch
+    loadBooks();
+  </script>
+</body>
+</html>
